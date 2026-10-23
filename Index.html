@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>سامانه بازدید املاک شهرداری خواف</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0b3d34">
+<link rel="apple-touch-icon" href="photo_30754442754_x.jpg">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css">
+<style>
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:Vazirmatn,Tahoma,sans-serif;font-size:15px;line-height:1.9;min-height:100vh}
+:root{--bg:#eef2f0;--card:#fff;--card2:#f6f8f7;--ink:#13262b;--mut:#677884;--line:rgba(16,60,52,.1);--pri:#0d6e5d;--gold:#c49a1a;--gold2:#ffe9a8;--seg:#e2e8e6;--shadow:0 10px 30px rgba(13,110,93,.1);--radius:22px}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1114;--card:#17242a;--card2:#1e2e35;--ink:#eaf2f4;--mut:#93a5b1;--line:rgba(255,255,255,.09);--pri:#45c2ab;--seg:#101b20;--shadow:0 12px 32px rgba(0,0,0,.45)}}
+:root[data-theme="dark"]{--bg:#0b1114;--card:#17242a;--card2:#1e2e35;--ink:#eaf2f4;--mut:#93a5b1;--line:rgba(255,255,255,.09);--pri:#45c2ab;--seg:#101b20;--shadow:0 12px 32px rgba(0,0,0,.45)}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(520px 300px at 85% -60px,rgba(196,154,26,.18),transparent),radial-gradient(600px 380px at 10% 0%,rgba(19,148,125,.22),transparent)}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:linear-gradient(135deg,#062a24 0%,#0b4a40 60%,#0f6b5c 100%);color:#fff;padding:10px 14px;display:flex;gap:10px;align-items:center;border-bottom:2px solid var(--gold)}
+.logo-frame{width:50px;height:50px;border-radius:16px;background:#000;padding:2.5px;border:1px solid #e8c84a;flex:none;display:grid;place-items:center}
+.logo-frame img{width:100%;height:100%;border-radius:12.5px;object-fit:cover;background:#000;display:block;filter:contrast(1.18) saturate(1.28) brightness(1.08)}
+.htxt{flex:1;min-width:0;line-height:1.5}.htxt h1{font-size:15.5px;margin:0;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.htxt small{font-size:11.5px;color:var(--gold2);display:block}
+header button{background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.28);border-radius:13px;min-width:44px;min-height:42px;font-size:14px;flex:none}
+/* ---- sidebar: همیشه کشویی، پیش‌فرض بسته ---- */
+#side{position:fixed;top:0;bottom:0;right:0;width:min(300px,84vw);z-index:70;background:linear-gradient(180deg,#062a24,#0b4a40 70%,#0f6b5c);color:#fff;transform:translateX(105%);transition:transform .25s;display:flex;flex-direction:column;padding:16px 12px;box-shadow:-8px 0 30px rgba(0,0,0,.3);overflow-y:auto}
+#side.open{transform:none}
+.sHead{text-align:center;padding:6px 0 12px;border-bottom:1px solid rgba(255,255,255,.15);position:relative}
+.sClose{position:absolute;top:2px;left:2px;min-width:38px;min-height:38px;padding:0;border-radius:12px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:16px}
+.sLogo{width:72px;height:72px;margin:0 auto 8px;border-radius:22px;background:linear-gradient(145deg,#fff3c4,#c49a1a 40%,#6e5607 70%,#ffe9a8);padding:3px}
+.sLogo img{width:100%;height:100%;border-radius:19px;object-fit:cover;background:#000;display:block;filter:contrast(1.15) saturate(1.25)}
+.sHead b{display:block;font-size:15px}.sHead small{font-size:11.5px;color:var(--gold2)}
+.sProf{display:flex;align-items:center;gap:10px;margin:12px 0;padding:10px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:18px;cursor:pointer}
+.sProf:active{background:rgba(255,255,255,.18)}
+.ava{width:48px;height:48px;border-radius:50%;flex:none;background:linear-gradient(135deg,#ffe9a8,#c49a1a 60%,#8a6a10);color:#2c2000;display:grid;place-items:center;font-weight:900;font-size:20px}
+.sProf b{display:block;font-size:13.5px;line-height:1.4}.sProf small{font-size:11.5px;color:var(--gold2)}
+.sProf .ed{margin-right:auto;font-size:16px;opacity:.8}
+#side .sQ{width:100%;margin:0 0 10px;padding:11px 14px;border-radius:14px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);color:#fff;font-size:13.5px}
+#side .sQ::placeholder{color:rgba(255,255,255,.55)}
+#side nav{flex:1;display:flex;flex-direction:column;gap:6px}
+#side nav button{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:#fff;text-align:right;border-radius:14px;min-height:50px;font-size:14px;font-weight:700;display:flex;align-items:center;gap:10px;padding:8px 14px}
+#side nav button:active{background:rgba(255,255,255,.2)}
+.bdg{margin-right:auto;background:var(--gold);color:#2c2000;border-radius:999px;padding:1px 9px;font-size:11.5px;font-weight:900}
+.sLbl{font-size:11px;color:var(--gold2);margin:12px 2px 4px;font-weight:800}
+.sRec{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:7px 11px;margin-bottom:5px;font-size:12.5px;cursor:pointer;text-align:right;color:#fff}
+.sRec:active{background:rgba(255,255,255,.16)}
+.sRec small{display:block;color:rgba(255,255,255,.6);font-size:10.5px;line-height:1.5}
+.sRec .ic{flex:none;font-size:16px}
+.sFoot{border-top:1px solid rgba(255,255,255,.15);padding-top:10px;margin-top:12px}
+.sFoot button{width:100%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:12px;min-height:42px}
+#ovl{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:65;display:none;opacity:0;transition:opacity .25s}#ovl.open{display:block;opacity:1}
+main{max-width:520px;margin:0 auto;padding:12px 10px 110px}
+button,select,input,textarea{font:inherit;color:inherit}
+button{border:1px solid var(--line);background:var(--card);border-radius:15px;padding:10px 14px;min-height:48px;cursor:pointer}
+button.p{background:linear-gradient(135deg,#0d6e5d,#15a281);border:0;color:#fff;font-weight:800;box-shadow:0 8px 20px rgba(13,110,93,.35)}
+button.w{color:#c05a2a;border-color:rgba(192,90,42,.25);background:transparent}
+label{display:block;margin:0 0 10px;font-size:13px;color:var(--mut);font-weight:700}
+label input,label select,label textarea{display:block;width:100%;margin-top:6px;padding:13px 14px;border:1.5px solid transparent;border-radius:16px;background:var(--card2);color:var(--ink);font-size:15px;font-weight:400}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:end}.row>*{flex:1}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px;margin-bottom:10px;box-shadow:var(--shadow)}
+.hero{margin:2px 0 14px;padding:26px 18px 20px;text-align:center;background:linear-gradient(180deg,#0f6b5c 0%,#0a4238 55%,#061f1b 100%);color:#fff;border-radius:30px;border:1px solid rgba(232,200,74,.45);position:relative;overflow:hidden}
+.hero-logo-wrap{width:108px;height:108px;margin:0 auto;border-radius:32px;background:linear-gradient(145deg,#fff3c4,#c49a1a 40%,#6e5607 70%,#ffe9a8);padding:3px;position:relative}
+.hero-logo{width:100%;height:100%;border-radius:29px;object-fit:cover;background:#000;display:block;filter:contrast(1.18) saturate(1.3) brightness(1.08)}
+.hero h2{margin:12px 0 2px;font-size:22px;font-weight:900}.hero p{margin:0;font-size:12.5px;opacity:.9}
+.hero-stats{display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap}.hero-stats span{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);padding:6px 15px;border-radius:999px;font-size:12.5px;font-weight:800}
+.mc{display:flex;align-items:center;gap:12px;width:100%;text-align:right;padding:14px;margin-bottom:10px;border-radius:22px;min-height:76px;border:1px solid var(--line);border-right:4px solid var(--gold)}
+.mc i{font-style:normal;flex:none;width:50px;height:50px;border-radius:16px;color:#fff;display:grid;place-items:center;font-size:23px;background:linear-gradient(135deg,#0d6e5d,#1ab48f)}
+.mc b{display:block;font-size:14.5px;color:var(--ink)}.mc small{color:var(--mut);font-size:12px}.mc em{font-style:normal;color:var(--gold);font-size:22px;margin-right:auto}
+.it{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.tabs{display:flex;gap:4px;overflow-x:auto;padding:5px;background:var(--seg);border-radius:18px;border:1px solid var(--line);margin-bottom:8px}
+.tabs button{flex:1;white-space:nowrap;border:0;background:transparent;min-height:42px;font-size:12.5px;border-radius:13px;color:var(--mut);padding:8px 10px}
+.tabs button.on{background:var(--card);color:var(--pri);font-weight:900;box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.bar{height:6px;background:var(--seg);border-radius:99px;margin:8px 2px 14px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--pri),var(--gold));border-radius:99px}
+.foot{position:fixed;bottom:calc(10px + env(safe-area-inset-bottom,0px));inset-inline:0;max-width:500px;margin:0 auto;background:var(--card);border:1px solid var(--line);padding:8px;border-radius:22px;display:flex;gap:8px;width:calc(100% - 20px)}
+.foot>*{flex:1;border-radius:15px}
+.authTabs{display:flex;gap:8px;margin-bottom:12px}.authTabs button{flex:1}
+.fl{border-top:1px dashed var(--line);padding-top:8px;margin-top:8px}.fl h4{margin:0 0 6px;font-size:14px}
+table{border-collapse:collapse;width:100%}
+.sc{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.sc td,.sc th{border:1px solid var(--line);padding:5px 7px;text-align:center;font-size:12px;white-space:nowrap}
+img.sk{max-width:100%;border:1px solid var(--line);border-radius:16px}
+.phGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.ph{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--card2)}
+.ph img{width:100%;height:130px;object-fit:cover;display:block;background:#000}
+.ph input{margin:6px;width:calc(100% - 12px);padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:13px}
+.phBar{display:flex;justify-content:space-between;align-items:center;padding:0 8px 8px}.phBar small{color:var(--mut)}.phBar button{min-height:36px;padding:4px 12px;font-size:13px}
+.shareWrap{position:relative;margin-top:10px}
+#shMenu{position:absolute;top:calc(100% + 6px);inset-inline:0;z-index:40;background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:8px;display:none;flex-direction:column;gap:6px}
+#shMenu.open{display:flex}
+#shMenu button{min-height:48px;text-align:right;font-weight:800}
+#skov{position:fixed;inset:0;z-index:100;background:#000}#skov iframe{width:100%;height:100%;border:0;background:#fff;display:block}
+.pg{display:none}.show .pg{display:block;background:#fff;color:#000;border:1px solid #ddd;margin:0 auto 14px;padding:8mm 9mm;width:100%;max-width:210mm;font-size:11px;line-height:1.8;overflow-x:auto;border-radius:6px}
+.pg h2{text-align:center;margin:0 0 8px;font-size:15px}
+.pg h3{margin:10px 0 4px;font-size:12px;background:#e9efec;padding:4px 8px;border-right:3px solid #0d6e5d}
+.pg table td,.pg table th{border:1px solid #777;padding:2px 5px;text-align:right}.pg th{background:#f1f3f4;width:18%}.pg .c td,.pg .c th{text-align:center;width:auto;padding:2px 3px;font-size:9.5px}
+.pg .photoT img{max-width:100%;max-height:58mm;border:1px solid #999}
+.pg .c{table-layout:auto}
+.sigRow{display:flex;justify-content:flex-start;margin-top:12px}.sigRow div{width:52mm;flex:none;border:1px dashed #888;border-radius:8px;min-height:12mm;padding:4px;text-align:center;font-size:10px}
+.logoPickWrap{display:none}.themeRow{display:flex;gap:8px}.themeRow button{flex:1}
+@media print{@page{size:A4 portrait;margin:8mm}body{background:#fff}header,.foot,.ui,.tabs,#side,#ovl,#mb{display:none!important}main{padding:0;margin:0;max-width:none}.show .pg{display:block;border:0;margin:0;padding:0;max-width:none;break-after:page}}
+</style>
+</head>
+<body>
+<nav id="side">
+<div class="sHead"><button class="sClose" data-a="sideclose">✕</button><div class="sLogo"><img src="photo_30754442754_x.jpg" alt="شهرداری خواف" onerror="logoFail(this)"></div><b>سامانه بازدید املاک</b><small>شهرداری خواف</small></div>
+<div class="sProf" data-a="nav" data-v="prof"><div class="ava" id="sAva">؟</div><div style="min-width:0"><b id="sName">مهمان</b><small id="sUser2">برای ورود بزنید</small></div><span class="ed">‹</span></div>
+<input class="sQ" id="sQ" placeholder="🔍 جستجوی پرونده، مالک، پلاک...">
+<nav>
+<button data-a="nav" data-v="home">🏠 خانه</button>
+<button data-a="nav" data-v="files">📄 پرونده‌های من <span class="bdg" id="bFiles">۰</span></button>
+<button data-a="nav" data-v="new">➕ پرونده جدید</button>
+<button data-a="nav" data-v="prof">👤 پروفایل من</button>
+<button data-a="nav" data-v="sets">⚙️ تنظیمات</button>
+</nav>
+<div class="sLbl">آخرین پرونده‌ها</div>
+<div id="sRec"></div>
+<div class="sFoot"><button data-a="logout">🚪 خروج از حساب</button></div>
+</nav>
+<div id="ovl" data-a="sideclose"></div>
+<header><div class="logo-frame"><img id="logoH" src="photo_30754442754_x.jpg" alt="شهرداری خواف" onerror="logoFail(this)"></div><div class="htxt"><h1>سامانه بازدید املاک</h1><small>شهرداری خواف • گزارش و کروکی</small></div><button id="mb" data-a="sidenav">☰</button><button id="hb" class="ui" style="display:none" data-a="back">→ بازگشت</button></header>
+<main id="app"></main>
+<script>
+try{var _th=localStorage.getItem("khaf_theme");if(_th==="light")document.documentElement.setAttribute("data-theme","light");else if(_th==="dark")document.documentElement.setAttribute("data-theme","dark")}catch(e){}
+var CLOGO=null;try{CLOGO=localStorage.getItem("khaf_custom_logo")}catch(e){}
+function logoSrc(){return CLOGO||"photo_30754442754_x.jpg"}
+function logoFail(img){if(!img.dataset.a){img.dataset.a=1;img.src="logo-khaf.jpg";return}if(!img.dataset.b){img.dataset.b=1;img.src="icon-192.png";return}img.style.opacity="0";document.querySelectorAll(".logoPickWrap").forEach(function(x){x.style.display="block"})}
+(function(){
+var $=function(s){return document.querySelector(s)};
+var DL={reason:"بازدید عادی،درخواست مالک،تخلف ساختمانی،پایان‌کار،تغییر کاربری،سایر",pos:"بافت فرسوده،خیابان اصلی،خیابان فرعی،بن‌بست،گوشه‌ای،سایر",road:"آسفالته،خاکی،سنگفرش،در حال اجرا،سایر",shape:"مستطیلی،ذوزنقه‌ای،چندضلعی،نامنظم،دارای پخ",build:"زمین،در حال ساخت،نیمه‌تمام،تکمیل‌شده،بهره‌برداری",yn:"دارد،ندارد",use:"مسکونی،تجاری،اداری،مختلط،صنعتی،آموزشی،درمانی،زمین بایر،سایر",facade:"آجر،سنگ،سیمان،کامپوزیت،شیشه،بدون نما،سایر",fstate:"کامل،ناقص،در حال اجرا،فاقد نما",yard:"آسفالت،موزاییک،سنگ،بتن،خاکی،سایر",status:"جدید،در حال پیگیری،نیاز به بازدید مجدد،ارجاع به کمیسیون،بسته‌شده"};
+var LN={reason:"علت بازدید",pos:"نوع موقعیت",road:"وضعیت گذر",shape:"شکل زمین",build:"وضعیت ساخت",yn:"دارد / ندارد",use:"کاربری",facade:"نوع نما",fstate:"وضعیت نما",yard:"کف‌سازی حیاط",status:"وضعیت پیگیری"};
+var S=[
+["۱ - شناسنامه",["fileNo|شماره پرونده|t|1","date|تاریخ بازدید|d|1","page|شماره صفحه|t","owner|نام مالک / بهره‌بردار|t|1","plate|کد نوسازی / پلاک|t","addr|نشانی دقیق|t","visitor|بازدیدکننده|t|1","reason|علت بازدید|l:reason"]],
+["۲ - موقعیت",["pos|نوع موقعیت|l:pos","road|وضعیت گذر|l:road","sidewalk|پیاده‌رو|l:yn","elev|اختلاف ارتفاع ملک با معبر|l:yn","width|عرض گذر (متر)|n","shape|شکل زمین|l:shape","proj|پیش‌آمدگی (متر)|n","setback|عقب‌نشینی (متر)|n","floors|تعداد طبقات|n","build|وضعیت ساخت|l:build","use|کاربری|l:use","park|تعداد پارکینگ|n"]],
+["۳ - چهار جبهه",["nL|شمالاً: طول (متر)|n","nT|شمالاً: پیوست به|t","sL|جنوباً: طول (متر)|n","sT|جنوباً: پیوست به|t","eL|شرقاً: طول (متر)|n","eT|شرقاً: پیوست به|t","wL|غرباً: طول (متر)|n","wT|غرباً: پیوست به|t","area|مساحت عرصه (متر مربع)|n","diff|تفاوت با املاک مجاور|x"]],
+["۴ - نما و حیاط",["facade|نوع نما|l:facade","fstate|وضعیت نما|l:fstate","color|رنگ غالب|t","facDesc|شرح نمای ساختمان|x","yardY|حیاط خلوت|l:yn","yard|کف‌سازی حیاط|l:yard"]],
+["۸ - پیگیری",["status|وضعیت پیگیری|l:status","next|اقدام بعدی / یادداشت پیگیری|x","nextDate|تاریخ پیگیری بعدی|d"]]
+];
+var FL=["زیر زمین","همکف","نیم طبقه","طبقه اول","طبقه دوم","طبقه سوم","طبقه چهارم","طبقه پنجم"];
+var CT=["مسکونی","آسانسور","پارکینگ","راه‌پله","لابی"];
+var TABS=["۱","۲","۳","۴","بنا","کروکی","عکس‌ها","توضیحات","پیگیری"];
+var D=[],LS={},V=null,view="home",st=0,q="",sk=false,authMode="login";var db;
+function idb(){return new Promise(function(r){try{var q=indexedDB.open("kv",1);q.onupgradeneeded=function(){q.result.createObjectStore("s")};q.onsuccess=function(){db=q.result;r()};q.onerror=function(){r()}}catch(e){r()}})}
+function ld(k,d){return new Promise(function(r){if(!db)return r(d);var g=db.transaction("s").objectStore("s").get(k);g.onsuccess=function(){r(g.result==null?d:g.result)};g.onerror=function(){r(d)}})}
+function sv(k,x){try{db.transaction("s","readwrite").objectStore("s").put(x,k)}catch(e){}}
+function users(){return LS["_users"]||(LS["_users"]=[])}
+function curUser(){var u=LS["_cur"];if(!u)return null;return users().filter(function(x){return x.u==u})[0]||null}
+function curName(){var u=curUser();return u?u.name:""}
+function getTheme(){return LS["_theme"]||"auto"}
+function applyTheme(){var th=getTheme();var r=document.documentElement;if(th==="dark")r.setAttribute("data-theme","dark");else if(th==="light")r.setAttribute("data-theme","light");else r.removeAttribute("data-theme");try{localStorage.setItem("khaf_theme",th)}catch(e){}}
+function gf(v){return v.fl||(v.fl=FL.map(function(n,i){return{id:i,n:n}}))}
+function gc(v){return v.ct||(v.ct=CT.map(function(n,i){return{id:i,n:n}}))}
+function nid(a){return a.reduce(function(m,x){return Math.max(m,x.id)},-1)+1}
+function L(n){return (LS[n]||DL[n]).split(/[،\n]/).map(function(s){return s.trim()}).filter(Boolean)}
+function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;")}
+function nd(s){return String(s).replace(/[۰-۹]/g,function(c){return c.charCodeAt(0)-1776}).replace(/[٠-٩]/g,function(c){return c.charCodeAt(0)-1632})}
+function num(x){var n=parseFloat(nd(x||"0"));return isNaN(n)?0:n}
+function fa(n){return String(n).replace(/[0-9]/g,function(c){return "۰۱۲۳۴۵۶۷۸۹"[c]})}
+function today(){return new Intl.DateTimeFormat("fa-IR-u-ca-persian-nu-latn",{year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date()).replace(/-/g,"/")}
+function vn(v){var s=D.filter(function(x){return x.fileNo&&x.fileNo==v.fileNo}).sort(function(a,b){return a.created-b.created});return s.indexOf(v)+1}
+function prev(v){return D.filter(function(x){return x!==v&&v.fileNo&&x.fileNo==v.fileNo}).sort(function(a,b){return a.created-b.created})}
+function save(){sv("kv_d",D)}
+function saveLS(){sv("kv_l",LS)}
+function fh(f){var p=f.split("|"),k=p[0],vv=V[k]||"",t=p[2],i;if(k=="visitor"&&!vv&&curName()){V[k]=curName();vv=curName()}if(t[0]=="l")i='<select data-k="'+k+'"><option></option>'+L(t.slice(2)).map(function(o){return"<option"+(o==vv?" selected":"")+">"+esc(o)+"</option>"}).join("")+"</select>";else if(t=="x")i='<textarea rows="2" data-k="'+k+'">'+esc(vv)+"</textarea>";else i='<input data-k="'+k+'" value="'+esc(vv)+'"'+(t=="n"?' inputmode="decimal"':"")+">";return"<label>"+p[1]+(p[3]?" *":"")+i+(t=="d"?'<button type="button" data-a="today" data-k="'+k+'" style="margin-top:6px">تاریخ امروز</button>':"")+"</label>"}
+function req(v){var m=[];S[0][1].forEach(function(f){var p=f.split("|");if(p[3]&&!v[p[0]])m.push(p[1])});return m}
+function done(v){var n=0,t=0;S.forEach(function(s){s[1].forEach(function(f){t++;if(v[f.split("|")[0]])n++})});return[n,t]}
+function stepH(){if(st<4)return"<h3>"+S[st][0]+"</h3>"+S[st][1].map(fh).join("");if(st==4)return stepB();if(st==5)return stepK();if(st==6)return stepP();if(st==7)return"<h3>۷ - توضیحات</h3>"+[1,2,3,4,5,6,7,8].map(function(i){return"<label>توضیح "+fa(i)+"<input data-k='n"+i+"' value='"+esc(V["n"+i])+"'></label>"}).join("");return"<h3>"+S[4][0]+"</h3>"+S[4][1].map(fh).join("")}
+function authH(){var isReg=authMode=="reg";return"<div class='hero'><div class='hero-logo-wrap'><img src='"+logoSrc()+"' class='hero-logo' alt='شهرداری خواف' onerror='logoFail(this)'></div><h2>ورود کارشناسان</h2><p>سامانه بازدید املاک شهرداری خواف</p></div><div class='card'><div class='authTabs'><button data-a='asw' data-v='login' class='"+(!isReg?"p":"")+"'>ورود</button><button data-a='asw' data-v='reg' class='"+(isReg?"p":"")+"'>ثبت‌نام</button></div>"+(isReg?"<label>نام و نام‌خانوادگی بازدیدکننده<input id='au_name' placeholder='مثلا علی رضایی'></label>":"")+"<label>نام کاربری<input id='au_u' placeholder='مثلا karshenas1'></label><label>رمز عبور<input id='au_p' type='password' placeholder='••••••'></label><button class='p' style='width:100%' data-a='doAuth'>"+(isReg?"ثبت‌نام و ورود":"ورود به سامانه")+"</button>"+(isReg?"<p style='color:var(--mut);font-size:12.5px'>نام شما به‌صورت خودکار در فیلد «بازدیدکننده» همه پرونده‌ها ثبت می‌شود.</p>":"<p style='color:var(--mut);font-size:12.5px'>اگر حساب ندارید، روی ثبت‌نام بزنید.</p>")+"</div>"}
+function homeH(){function c(a,i,t,s){return"<button class='card mc' data-a='"+a+"'><i>"+i+"</i><span><b>"+t+"</b><small>"+s+"</small></span><em>‹</em></button>"}var open=D.filter(function(x){return!x.status||x.status.indexOf("بسته")<0}).length;return"<div class='hero'><div class='hero-logo-wrap'><img src='"+logoSrc()+"' class='hero-logo' alt='شهرداری خواف' onerror='logoFail(this)'></div><h2>سامانه بازدید املاک</h2><p>شهرداری خواف • ثبت بازدید، کروکی و گزارش رسمی</p><div class='hero-stats'><span>📁 "+fa(D.length)+" پرونده</span><span>⏳ "+fa(open)+" باز</span></div></div>"+"<div class='card logoPickWrap'><b>لوگو پیدا نشد!</b><br><small>فایل photo_30754442754_x.jpg کنار index.html نیست.</small><br><br><input type='file' id='logoPick' accept='image/*'></div>"+c("files","📄","پرونده‌های من","مشاهده و مدیریت "+fa(D.length)+" پرونده")+c("new","➕","پرونده جدید","ثبت اطلاعات ملک و مالک")+c("prof","👤","پروفایل من","نام، رمز و آمار بازدیدها")+c("sets","⚙️","تنظیمات","لیست‌ها، لوگو و حالت نمایش")}
+function listH(){var r=D.filter(function(x){return!q||(x.fileNo+" "+x.owner+" "+x.plate).indexOf(q)>-1}).sort(function(a,b){return b.created-a.created});return"<div class='row'><button class='p' data-a='new'>بازدید جدید</button></div><label style='margin-top:10px'>جست‌وجو (شماره پرونده، مالک، پلاک)<input id='q' value='"+esc(q)+"'></label>"+(r.length?r.map(function(x){var pc=(x.photos||[]).length;return"<div class='card it'><div data-a='open' data-i='"+x.created+"' style='flex:1'><b>پرونده "+esc(x.fileNo||"بدون شماره")+" - بازدید "+fa(vn(x))+"</b><small>"+esc(x.owner)+" | "+esc(x.date)+(pc?" | 📷 "+fa(pc)+" عکس":"")+"</small></div><button class='w' data-a='del' data-i='"+x.created+"'>حذف</button></div>"}).join(""):"<div class='card'>"+(q?"نتیجه‌ای برای جستجو پیدا نشد.":"هنوز بازدیدی ثبت نشده.")+"</div>")+"<div class='row' style='margin-top:10px'><button data-a='regx'>اکسل سوابق</button><button data-a='json'>پشتیبان</button><button data-a='imp'>بازیابی</button></div><input type='file' id='ji' accept='.json' style='display:none'>"}
+function formH(){var d=done(V);return"<div class='tabs ui'>"+TABS.map(function(t,i){return"<button data-a='step' data-i='"+i+"'"+(i==st?" class='on'":"")+">"+t+"</button>"}).join("")+"</div><div class='bar'><i style='width:"+Math.round(d[0]/d[1]*100)+"%'></i></div>"+stepH()+"<div class='foot ui'><button data-a='prev'"+(st?"":" disabled")+">قبلی</button>"+(st<8?"<button class='p' data-a='nxt'>بعدی</button>":"<button class='p' data-a='rep'>پیش‌نمایش گزارش</button>")+"</div>"}
+function kv(a){var h="<table>";for(var i=0;i<a.length;i+=2)h+="<tr><th>"+a[i][0]+"</th><td>"+esc(a[i][1])+"</td>"+(a[i+1]?"<th>"+a[i+1][0]+"</th><td>"+esc(a[i+1][1])+"</td>":"<td colspan=2></td>")+"</tr>";return h+"</table>"}
+function pairs(s){return S[s][1].map(function(f){var p=f.split("|");return[p[1],V[p[0]]]})}
+function repH(){var v=V,ph=v.photos||[],h="<div class='pg'><h2>گزارش بازدید ملک - شهرداری خواف</h2>"+kv([["شماره پرونده",v.fileNo],["تاریخ بازدید",v.date],["بازدیدکننده",v.visitor],["شماره صفحه",v.page]]);[0,1,2,3].forEach(function(s){h+="<h3>"+S[s][0]+"</h3>"+kv(pairs(s))});h+="<h3>۵ - کروکی ملک</h3>"+(v.sketch?"<div style='text-align:center'><img src='"+v.sketch+"' style='max-width:100%;max-height:90mm'></div>":"<div style='height:30mm'></div>")+utmT(v)+"</div>";
+h+="<div class='pg'><h2>گزارش بازدید ملک - شهرداری خواف</h2><h3>جدول بنای موجود</h3>"+bt(v)+"<h3>۶ - پیوست تصاویر بازدید ("+fa(ph.length)+" عکس)</h3>";
+if(ph.length){h+="<table class='c photoT'><tr>";ph.forEach(function(p,i){if(i%2==0&&i!=0)h+="</tr><tr>";h+="<td style='width:50%'><img src='"+p.d+"'><br><small>عکس "+fa(i+1)+(p.c?" - "+esc(p.c):"")+"</small></td>"});if(ph.length%2==1)h+="<td></td>";h+="</tr></table>"}else{h+="<div style='height:15mm'></div>"}
+h+="<h3>۷ - توضیحات</h3><table>"+[1,2,3,4,5,6,7,8].map(function(i){return"<tr><td>"+fa(i)+"- "+esc(v["n"+i])+"</td></tr>"}).join("")+"</table><h3>سوابق این پرونده</h3><table class='c'><tr><th>بازدید</th><th>تاریخ</th><th>بازدیدکننده</th><th>علت</th><th>وضعیت</th></tr>"+prev(v).concat([v]).map(function(x,i){return"<tr><td>"+fa(i+1)+"</td><td>"+esc(x.date)+"</td><td>"+esc(x.visitor)+"</td><td>"+esc(x.reason)+"</td><td>"+esc(x.status)+"</td></tr>"}).join("")+"</table><div class='sigRow'><div>نام و امضای بازدیدکننده<br><b>"+esc(v.visitor||"")+"</b></div></div></div>";return h}
+function shareH(){return"<div class='card ui'><b>📤 اشتراک‌گذاری گزارش</b><br><small style='color:var(--mut)'>متن خلاصه گزارش را مستقیم در پیام‌رسان بفرستید، بعد PDF بگیرید و فایل را پیوست کنید.</small><div class='shareWrap'><button class='p' style='width:100%;min-height:52px;font-size:15px' data-a='shmenu'>📤 اشتراک‌گذاری</button><div id='shMenu'><button data-a='sh' data-v='wa'>🟢 واتساپ</button><button data-a='sh' data-v='tg'>🔵 تلگرام</button><button data-a='sh' data-v='et'>🟠 ایتا</button><button data-a='sh' data-v='bl'>🔷 بله</button><button data-a='sh' data-v='sys'>📤 سایر...</button></div></div></div>"}
+function stepB(){var f=gf(V),c=gc(V);return"<h3>۵ - جدول بنای موجود</h3>"+(V.ayan?"<div class='card'>مساحت اعیان در کروکی: <b>"+(Math.round(V.ayan*100)/100)+"</b> متر مربع</div>":"")+"<div class='fl'><h4>ستون‌ها</h4><div class='row'>"+c.map(function(x){return"<span style='display:flex;gap:4px'><input data-cn='"+x.id+"' value='"+esc(x.n)+"' style='min-width:0;padding:8px;border:1px solid var(--line);border-radius:10px;background:var(--card2);color:var(--ink)'><button class='w' data-a='delc' data-i='"+x.id+"'>×</button></span>"}).join("")+"<button data-a='addc'>+ ستون</button></div></div>"+f.map(function(r){return"<div class='fl'><div class='row'><input data-fn='"+r.id+"' value='"+esc(r.n)+"' style='font-weight:800;padding:9px;border:1px solid var(--line);border-radius:10px;background:var(--card2);color:var(--ink)'><button class='w' data-a='delf' data-i='"+r.id+"'>حذف</button></div><div class='row'>"+c.map(function(x){var k="b"+r.id+"_"+x.id;return"<label>"+esc(x.n)+"<input inputmode='decimal' placeholder='مساحت' data-k='"+k+"a' value='"+esc(V[k+"a"])+"'><input inputmode='decimal' placeholder='واحد' data-k='"+k+"u' value='"+esc(V[k+"u"])+"'></label>"}).join("")+"</div></div>"}).join("")+"<div class='row' style='margin:10px 0'><button data-a='addf'>+ افزودن طبقه</button></div><div class='sc' id='tot'>"+bt(V)+"</div>"}
+function stepK(){var r2=function(x){return Math.round(x*100)/100};return"<h3>کروکی ملک</h3><div class='card'>"+(V.sketch?"<img class='sk' src='"+V.sketch+"'>":"<p style='color:var(--mut)'>هنوز کروکی ترسیم نشده.</p>")+(V.arseh?"<div>عرصه: <b>"+r2(V.arseh)+"</b> م² | اعیان: <b>"+r2(V.ayan||0)+"</b> م²</div>":"")+"</div><button class='p' style='width:100%;min-height:56px' data-a='openk'>"+(V.sketch?"ویرایش کروکی":"شروع ترسیم کروکی")+"</button>"}
+function stepP(){var ph=V.photos||[];return"<h3>۶ - پیوست تصاویر بازدید</h3><p style='color:var(--mut)'>با گوشی عکس بگیرید یا از گالری انتخاب کنید. زیر هر عکس توضیح بنویسید تا در گزارش چاپی بیاید. عکس‌ها فشرده و کم‌حجم ذخیره می‌شوند.</p><div class='row'><label style='text-align:center;background:linear-gradient(135deg,#0d6e5d,#15a281);color:#fff;border-radius:15px;padding:13px;cursor:pointer;margin:0'>📷 گرفتن عکس با دوربین<input type='file' id='pcam' accept='image/*' capture='environment' style='display:none'></label><label style='text-align:center;background:var(--card);border:1px solid var(--line);border-radius:15px;padding:13px;cursor:pointer;margin:0'>🖼️ انتخاب از گالری<input type='file' id='ppick' accept='image/*' multiple style='display:none'></label></div>"+(ph.length?"<div class='phGrid'>"+ph.map(function(p,i){return"<div class='ph'><img src='"+p.d+"'><input data-pcap='"+p.id+"' value='"+esc(p.c||"")+"' placeholder='توضیح عکس "+fa(i+1)+" مثلا نمای شمالی'><div class='phBar'><small>عکس "+fa(i+1)+"</small><button class='w' data-a='delp' data-i='"+p.id+"'>حذف</button></div></div>"}).join("")+"</div><p style='color:var(--mut)'>"+fa(ph.length)+" عکس پیوست شد — در گزارش ۲تایی مرتب چاپ می‌شود.</p>":"<div class='card' style='text-align:center;color:var(--mut)'>هنوز عکسی ثبت نشده.</div>")}
+function utmT(v){if(!v.csv)return"";var r=v.csv.split(/\r?\n/).slice(1).filter(Boolean).map(function(l){return l.split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/).map(function(x){return x.replace(/^"|"$/g,"")})});if(!r.length)return"";return"<h3>مختصات UTM</h3><table class='c'><tr><th>نوع</th><th>نقطه</th><th>زون</th><th>X</th><th>Y</th></tr>"+r.map(function(c){return"<tr><td>"+(c[7]=="ayan"?"اعیان":"عرصه")+"</td><td>"+esc(c[8])+"</td><td>"+esc(c[9])+"</td><td>"+esc(c[10])+"</td><td>"+esc(c[11])+"</td></tr>"}).join("")+"</table>"}
+function bt(v){var f=gf(v),c=gc(v),a=c.map(function(){return 0}),u=a.slice(),ta=0,tu=0,h="<table class='c'><tr><th rowspan=2>طبقات</th>"+c.map(function(x){return"<th colspan=2>"+esc(x.n)+"</th>"}).join("")+"<th colspan=2>جمع</th></tr><tr>"+c.concat([0]).map(function(){return"<th>مساحت</th><th>واحد</th>"}).join("")+"</tr>";f.forEach(function(r){var ra=0,ru=0;h+="<tr><th>"+esc(r.n)+"</th>";c.forEach(function(x,j){var k="b"+r.id+"_"+x.id,p=num(v[k+"a"]),q2=num(v[k+"u"]);a[j]+=p;u[j]+=q2;ra+=p;ru+=q2;h+="<td>"+p+"</td><td>"+q2+"</td>"});h+="<td>"+ra+"</td><td>"+ru+"</td></tr>"});h+="<tr><th>جمع</th>"+c.map(function(x,j){ta+=a[j];tu+=u[j];return"<td>"+a[j]+"</td><td>"+u[j]+"</td>"}).join("")+"<td>"+ta+"</td><td>"+tu+"</td></tr></table>";return h}
+function profH(){var u=curUser();if(!u)return authH();var mine=D.filter(function(x){return x.visitor==u.name}).length;var open=D.filter(function(x){return x.visitor==u.name&&(!x.status||x.status.indexOf("بسته")<0)}).length;var phc=D.reduce(function(m,x){return m+(x.visitor==u.name?(x.photos||[]).length:0)},0);return"<h3>پروفایل کاربر</h3><div class='card' style='text-align:center'><div class='ava' style='width:78px;height:78px;font-size:32px;margin:0 auto 8px'>"+esc((u.name||"?").charAt(0))+"</div><b style='font-size:17px'>"+esc(u.name)+"</b><br><small style='color:var(--mut)'>@"+esc(u.u)+"</small></div><div class='card'><b>📊 آمار فعالیت شما</b><table style='margin-top:8px'><tr><th>پرونده‌های ثبت‌شده</th><td>"+fa(mine)+"</td></tr><tr><th>پرونده‌های باز</th><td>"+fa(open)+"</td></tr><tr><th>عکس‌های پیوست</th><td>"+fa(phc)+"</td></tr></table></div><div class='card'><b>✏️ ویرایش پروفایل</b><label>نام و نام‌خانوادگی<input id='pf_name' value='"+esc(u.name)+"'></label><label>رمز فعلی<input id='pf_old' type='password' placeholder='برای تغییر رمز وارد کنید'></label><label>رمز جدید<input id='pf_new' type='password' placeholder='خالی = بدون تغییر'></label><button class='p' style='width:100%' data-a='pfsave'>ذخیره تغییرات</button></div>"}
+function setH(){var th=getTheme();var u=curUser();function tb(v,t){return"<button data-a='theme' data-v='"+v+"' class='"+(th===v?"p":"")+"'>"+t+"</button>"}return"<h3>تنظیمات</h3><div class='card'><b>👤 کاربر فعال</b><br>"+(u?esc(u.name)+" • "+esc(u.u):"—")+"<div class='row' style='margin-top:8px'><button data-a='nav' data-v='prof'>پروفایل من</button><button data-a='logout'>خروج از حساب</button></div></div><div class='card'><b>حالت نمایش</b><br><small style='color:var(--mut)'>روشن، تیره یا خودکار</small><div class='themeRow' style='margin-top:10px'>"+tb("light","☀️ روشن")+tb("dark","🌙 تیره")+tb("auto","📱 خودکار")+"</div></div><div class='card'><b>لوگوی شهرداری</b><br><input type='file' id='logoPick' accept='image/*'><br><br><button data-a='resetLogo'>حذف لوگوی دستی</button></div>"+Object.keys(DL).map(function(k){return"<label>"+LN[k]+"<textarea rows='3' data-ls='"+k+"'>"+esc(L(k).join("\n"))+"</textarea></label>"}).join("")+"<div class='row'><button class='p' data-a='savel'>ذخیره</button></div>"}
+function R(){var a=$("#app");a.className=view=="rep"?"show":"";$("#hb").style.display=(view=="home"||view=="auth")?"none":"";var u=curUser();var sv1=document.getElementById("sName"),su2=document.getElementById("sUser2"),sa=document.getElementById("sAva");if(sv1)sv1.textContent=u?u.name:"مهمان";if(su2)su2.textContent=u?"@"+u.u:"برای ورود بزنید";if(sa)sa.textContent=u?(u.name||"؟").charAt(0):"؟";var bf=document.getElementById("bFiles");if(bf)bf.textContent=fa(D.length);var sr=document.getElementById("sRec");if(sr){var rec=D.slice().sort(function(x,y){return y.created-x.created}).slice(0,3);sr.innerHTML=rec.length?rec.map(function(x){return"<div class='sRec' data-a='open' data-i='"+x.created+"'><span class='ic'>📁</span><span style='flex:1;min-width:0'><b>"+esc(x.fileNo||"بدون شماره")+"</b><small>"+esc(x.owner||"")+" • "+esc(x.date||"")+"</small></span></div>"}).join(""):"<div class='sRec' style='opacity:.6;cursor:default'><span class='ic'>📭</span><span>هنوز پرونده‌ای نیست</span></div>"}document.body.style.overflow=sk?"hidden":"";if(view=="prof"&&!u)view="auth";if(view=="auth")a.innerHTML=authH();else if(view=="home")a.innerHTML=homeH();else if(view=="list")a.innerHTML=listH();else if(view=="form")a.innerHTML=formH();else if(view=="sets")a.innerHTML=setH();else if(view=="prof")a.innerHTML=profH();else a.innerHTML="<div class='row ui' style='margin-bottom:10px'><button class='p' data-a='print'>PDF / چاپ</button><button data-a='xls'>اکسل</button><button data-a='edit'>ویرایش</button></div>"+shareH()+repH();var lh=document.getElementById("logoH");if(lh&&CLOGO)lh.src=CLOGO;if(sk)a.insertAdjacentHTML("beforeend","<div id='skov'><iframe id='mp' src='map.html'></iframe></div>")}
+function dl(name,txt,type){var b=new Blob([txt],{type:type}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},1500)}
+function xhtml(b){return"<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:x='urn:schemas-microsoft-com:office:excel'><head><meta charset='utf-8'></head><body dir='rtl'>"+b+"</body></html>"}
+function find(i){return D.filter(function(x){return String(x.created)==i})[0]}
+function shClose(){var m=$("#shMenu");if(m)m.classList.remove("open")}
+function sideClose(){var s=$("#side"),o=$("#ovl");if(s)s.classList.remove("open");if(o)o.classList.remove("open")}
+function shareTxt(){var v=V;return"گزارش بازدید شهرداری خواف\nپرونده "+(v.fileNo||"")+" • بازدید "+vn(v)+"\nمالک: "+(v.owner||"")+"\nتاریخ: "+(v.date||"")+"\nبازدیدکننده: "+(v.visitor||"")+"\nنشانی: "+(v.addr||"")+"\nوضعیت: "+(v.status||"")}
+function addPh(f){var fr=new FileReader();fr.onload=function(){var im=new Image();im.onload=function(){try{var mx=1280,s=Math.min(1,mx/Math.max(im.width,im.height)),cw=Math.max(1,Math.round(im.width*s)),ch=Math.max(1,Math.round(im.height*s)),cv=document.createElement("canvas");cv.width=cw;cv.height=ch;cv.getContext("2d").drawImage(im,0,0,cw,ch);var url=cv.toDataURL("image/jpeg",.72);if(!V.photos)V.photos=[];V.photos.push({id:Date.now()+""+Math.floor(Math.random()*9999),d:url,c:""});save();R()}catch(e){alert("خطا در پردازش عکس")}};im.src=fr.result};fr.readAsDataURL(f)}
+var A={home:function(){view="home";R()},files:function(){view="list";R()},
+asw:function(e){authMode=e.v;R()},
+doAuth:function(){var u=($("#au_u")||{}).value||"",p=(($("#au_p")||{}).value||""),nm=($("#au_name")||{}).value||"";u=u.trim();if(!u||!p){alert("نام کاربری و رمز را وارد کنید");return}if(authMode=="reg"){if(!nm.trim()){alert("نام و نام‌خانوادگی را وارد کنید");return}if(users().filter(function(x){return x.u==u}).length){alert("این نام کاربری قبلا ثبت شده، وارد شوید");authMode="login";R();return}users().push({u:u,p:p,name:nm.trim()});LS["_cur"]=u;saveLS();view="home";R()}else{var f=users().filter(function(x){return x.u==u&&x.p==p})[0];if(!f){alert("نام کاربری یا رمز اشتباه است");return}LS["_cur"]=u;saveLS();view="home";R()}},
+pfsave:function(){var u=curUser();if(!u)return;var nm=($("#pf_name")||{}).value||"",op=($("#pf_old")||{}).value||"",np=($("#pf_new")||{}).value||"";if(np){if(op!=u.p){alert("رمز فعلی اشتباه است");return}u.p=np}if(nm.trim())u.name=nm.trim();saveLS();alert("پروفایل ذخیره شد");R()},
+logout:function(){LS["_cur"]=null;saveLS();sideClose();view="auth";R();scrollTo(0,0)},
+sidenav:function(){var s=$("#side"),o=$("#ovl");s.classList.add("open");o.classList.add("open")},
+sideclose:function(){sideClose()},
+nav:function(e){sideClose();if(e.v=="home")A.home();else if(e.v=="files")A.files();else if(e.v=="new")A["new"]();else if(e.v=="sets")A.sets();else if(e.v=="prof"){view="prof";R()}scrollTo(0,0)},
+theme:function(e){LS["_theme"]=e.v;saveLS();applyTheme();R()},
+back:function(){view=view=="form"?"list":view=="rep"?"form":"home";if(!curUser())view="auth";R();scrollTo(0,0)},openk:function(){sk=true;R()},
+shmenu:function(){var m=$("#shMenu");if(m)m.classList.toggle("open")},
+addf:function(){var f=gf(V);f.push({id:nid(f),n:"طبقه جدید"});save();R()},addc:function(){var c=gc(V);c.push({id:nid(c),n:"ستون جدید"});save();R()},
+delf:function(e){if(confirm("حذف شود؟")){V.fl=gf(V).filter(function(r){return String(r.id)!=e.i});save();R()}},delc:function(e){if(confirm("حذف شود؟")){V.ct=gc(V).filter(function(r){return String(r.id)!=e.i});save();R()}},
+delp:function(e){if(confirm("این عکس حذف شود؟")){V.photos=(V.photos||[]).filter(function(p){return String(p.id)!=e.i});save();R()}},
+new:function(){V={created:Date.now(),status:"جدید",photos:[],visitor:curName()};D.push(V);st=0;view="form";R()},open:function(e){V=find(e.i);if(!V.photos)V.photos=[];if(!V.visitor)V.visitor=curName();st=0;view="form";sideClose();R()},del:function(e){if(confirm("حذف شود؟")){D=D.filter(function(x){return String(x.created)!=e.i});save();R()}},step:function(e){st=+e.i;R()},nxt:function(){st++;R();scrollTo(0,0)},prev:function(){st--;R();scrollTo(0,0)},today:function(e){V[e.k]=today();save();R()},rep:function(){var m=req(V);if(m.length){alert("موارد الزامی: "+m.join("، "));st=0;R();return}if(!V.visitor)V.visitor=curName();save();view="rep";R()},edit:function(){view="form";R()},print:function(){window.print()},xls:function(){dl("گزارش.xls",xhtml(repH().replace(/<img[^>]*>/g,"[عکس]")),"application/vnd.ms-excel")},regx:function(){var t="<table><tr><th>ردیف</th><th>پرونده</th><th>تاریخ</th><th>مالک</th><th>بازدیدکننده</th><th>تعداد عکس</th></tr>"+D.map(function(x,i){return"<tr><td>"+fa(i+1)+"</td><td>"+esc(x.fileNo)+"</td><td>"+esc(x.date)+"</td><td>"+esc(x.owner)+"</td><td>"+esc(x.visitor)+"</td><td>"+fa((x.photos||[]).length)+"</td></tr>"}).join("")+"</table>";dl("سوابق.xls",xhtml(t),"application/vnd.ms-excel")},json:function(){dl("backup.json",JSON.stringify({d:D,l:LS}),"application/json")},imp:function(){$("#ji").click()},sets:function(){view="sets";R()},resetLogo:function(){try{localStorage.removeItem("khaf_custom_logo")}catch(e){}CLOGO=null;R()},savel:function(){document.querySelectorAll("[data-ls]").forEach(function(t){LS[t.dataset.ls]=t.value});saveLS();view="list";R()},
+sh:function(e){shClose();var t=shareTxt(),en=encodeURIComponent(t);if(e.v=="wa")open("https://wa.me/?text="+en,"_blank");else if(e.v=="tg")open("https://t.me/share/url?url=&text="+en,"_blank");else if(e.v=="et")open("https://eitaa.com/share?text="+en,"_blank");else if(e.v=="bl")open("https://ble.ir/share?text="+en,"_blank");else{if(navigator.share){navigator.share({title:"گزارش بازدید شهرداری خواف",text:t}).catch(function(){})}else{try{navigator.clipboard.writeText(t);alert("متن گزارش کپی شد، در ایتا یا بله بچسبانید")}catch(x){alert(t)}}}}};
+document.addEventListener("click",function(e){var t=e.target.closest("[data-a]");if(t&&A[t.dataset.a]){A[t.dataset.a](t.dataset);return}if(!e.target.closest("#shMenu"))shClose()});
+document.addEventListener("input",function(e){var t=e.target;if(t.id=="q"){q=nd(t.value);R();var n=$("#q");if(n){n.focus()}return}if(t.id=="sQ"){q=nd(t.value);return}if(t.dataset.pcap!=null&&V&&V.photos){var p=V.photos.filter(function(x){return String(x.id)==t.dataset.pcap})[0];if(p){p.c=t.value;save()}return}if(t.dataset.k&&V){V[t.dataset.k]=t.value;save()}});
+document.addEventListener("keydown",function(e){var t=e.target;if(t&&t.id=="sQ"&&e.key=="Enter"){view="list";sideClose();R();scrollTo(0,0)}});
+document.addEventListener("change",function(e){var t=e.target;if((t.id=="ppick"||t.id=="pcam")&&t.files&&t.files.length){for(var i=0;i<t.files.length;i++)addPh(t.files[i]);return}if(t.id=="logoPick"&&t.files[0]){var fr=new FileReader();fr.onload=function(){CLOGO=fr.result;try{localStorage.setItem("khaf_custom_logo",CLOGO)}catch(x){}R()};fr.readAsDataURL(t.files[0]);return}if(t.id=="ji"&&t.files[0]){var f=new FileReader();f.onload=function(){try{var o=JSON.parse(f.result);D=o.d;LS=o.l||{};save();applyTheme();R()}catch(x){}};f.readAsText(t.files[0])}});
+/* ---- swipe: کشیدن انگشت برای باز/بسته کردن منو ---- */
+(function(){var sx=0,sy=0,on=false,fromDrawer=false;
+document.addEventListener("touchstart",function(e){if(e.touches.length!=1)return;var t=e.touches[0];sx=t.clientX;sy=t.clientY;on=true;fromDrawer=!!e.target.closest("#side")},{passive:true});
+document.addEventListener("touchmove",function(e){if(!on)return;var t=e.touches[0],dx=sx-t.clientX,dy=Math.abs(sy-t.clientY),s=$("#side"),o=$("#ovl");if(!s||!o)return;var isOpen=s.classList.contains("open");if(dy>50)return;if(!isOpen&&!fromDrawer&&dx>50){s.classList.add("open");o.classList.add("open");on=false}else if(isOpen&&(dx<-50||(fromDrawer&&dx>50))){s.classList.remove("open");o.classList.remove("open");on=false}},{passive:true});
+document.addEventListener("touchend",function(){on=false;fromDrawer=false},{passive:true});
+document.addEventListener("touchcancel",function(){on=false;fromDrawer=false},{passive:true});})();
+window.addEventListener("message",function(e){var d=e.data,fr=$("#mp");if(!d||!V||!fr||e.source!==fr.contentWindow)return;if(d.t=="close"){sk=false;R();return}if(d.t=="ready")fr.contentWindow.postMessage({t:"load",s:V.map||null},"*");if(d.t=="data"){V.map=d.s;V.arseh=d.arseh;V.ayan=d.ayan;V.csv=d.csv;var im=new Image();im.onload=function(){V.sketch=im.src;save()};im.src=d.png;save()}});
+idb().then(function(){return ld("kv_d",[])}).then(function(d){D=d;return ld("kv_l",{})}).then(function(l){LS=l||{};if(!LS["_users"])LS["_users"]=[];if(!LS["_theme"]){try{var t=localStorage.getItem("khaf_theme");if(t)LS["_theme"]=t}catch(e){}}applyTheme();if(!curUser())view="auth";R()});
+})();
+</script>
+</body>
+</html>

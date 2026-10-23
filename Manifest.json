@@ -1,0 +1,27 @@
+{
+  "name": "سامانه بازدید املاک شهرداری خواف",
+  "short_name": "بازدید خواف",
+  "description": "ثبت بازدید، کروکی و گزارش رسمی املاک شهرداری خواف",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "dir": "rtl",
+  "lang": "fa",
+  "background_color": "#0b3d34",
+  "theme_color": "#0b3d34",
+  "icons": [
+    {
+      "src": "photo_30754442754_x.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any"
+    },
+    {
+      "src": "photo_30754442754_x.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ]
+}
